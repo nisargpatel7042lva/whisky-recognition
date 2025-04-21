@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50 font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-500 hover:bg-primary-600 text-white focus:ring-primary-500;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-secondary-800 hover:bg-secondary-900 text-white focus:ring-secondary-800;
+  }
+  
+  .btn-outline {
+    @apply btn border border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-neutral-800 rounded-xl shadow-md p-6;
+  }
+  
+  .card-glass {
+    @apply bg-white/80 dark:bg-neutral-800/80 backdrop-blur-glass rounded-xl shadow-glass p-6;
+  }
+  
+  .input {
+    @apply w-full px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md bg-white dark:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500;
+  }
+}
+
+.confidence-meter {
+  background: conic-gradient(#D4A139 var(--percentage), #E2D8CD var(--percentage));
+}
+
+.scan-line {
+  @apply absolute h-px w-full bg-primary-400 opacity-70 z-10;
+  box-shadow: 0 0 8px 2px rgba(212, 161, 57, 0.6);
+  animation: scan 2s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
