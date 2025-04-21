@@ -1,0 +1,30 @@
+# Bun
+.bun/
+
+# Node
+node_modules/
+
+# Mac system files
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Env files
+.env
+.env.*
+
+# OS junk
+Thumbs.db
+ehthumbs.db
+
+# IDEs
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
