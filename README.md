@@ -74,4 +74,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 - Inspired by the need for efficient whisky brand recognition.
 - Built with modern web development tools and practices.
-```
