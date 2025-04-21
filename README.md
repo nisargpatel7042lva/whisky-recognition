@@ -34,7 +34,7 @@ whisky-recognition/
 ├── tsconfig.json           # TypeScript configuration
 └── vite.config.ts          # Vite configuration
 
-```
+
 ## 📦 Installation
 
 1. **Clone the repository:**
