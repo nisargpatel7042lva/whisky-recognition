@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
-import { Camera, Upload, X, Scan } from 'lucide-react';
+import { Camera, Upload, X, Scan, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScanStatus } from '../types';
 
@@ -22,9 +22,10 @@ const ImageScanner: React.FC<ImageScannerProps> = ({ onCapture, status }) => {
       const imageSrc = webcamRef.current.getScreenshot();
       if (imageSrc) {
         setPreviewImage(imageSrc);
+        onCapture(imageSrc);
       }
     }
-  }, [webcamRef]);
+  }, [webcamRef, onCapture]);
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,16 +34,9 @@ const ImageScanner: React.FC<ImageScannerProps> = ({ onCapture, status }) => {
       reader.onload = (event) => {
         const result = event.target?.result as string;
         setPreviewImage(result);
-        // Automatically trigger scan when file is selected
         onCapture(result);
       };
       reader.readAsDataURL(file);
-    }
-  };
-  
-  const handleScan = () => {
-    if (previewImage) {
-      onCapture(previewImage);
     }
   };
   
@@ -63,32 +57,41 @@ const ImageScanner: React.FC<ImageScannerProps> = ({ onCapture, status }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col md:flex-row gap-4 w-full"
+            className="w-full space-y-6"
           >
-            <button
-              onClick={() => setCaptureMethod('camera')}
-              className="btn-primary flex-1 flex items-center justify-center gap-2 py-4"
-            >
-              <Camera size={20} />
-              <span>Use Camera</span>
-            </button>
-            <button
-              onClick={() => {
-                setCaptureMethod('upload');
-                fileInputRef.current?.click();
-              }}
-              className="btn-secondary flex-1 flex items-center justify-center gap-2 py-4"
-            >
-              <Upload size={20} />
-              <span>Upload Image</span>
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileChange}
-            />
+            <div className="flex flex-col md:flex-row gap-4">
+              <button
+                onClick={() => setCaptureMethod('camera')}
+                className="btn-primary flex-1 flex items-center justify-center gap-2 py-4"
+              >
+                <Camera size={20} />
+                <span>Use Camera</span>
+              </button>
+              <button
+                onClick={() => {
+                  setCaptureMethod('upload');
+                  fileInputRef.current?.click();
+                }}
+                className="btn-secondary flex-1 flex items-center justify-center gap-2 py-4"
+              >
+                <Upload size={20} />
+                <span>Upload Image</span>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </div>
+            
+            <div className="bg-primary-100/50 dark:bg-primary-900/30 rounded-lg p-4 flex items-start gap-3">
+              <Info size={20} className="text-primary-600 dark:text-primary-400 mt-0.5" />
+              <p className="text-sm text-primary-800 dark:text-primary-200">
+                For best results, ensure the bottle label is clearly visible and well-lit. Position the camera close to the label and keep it steady while capturing.
+              </p>
+            </div>
           </motion.div>
         ) : previewImage ? (
           <motion.div
@@ -126,33 +129,6 @@ const ImageScanner: React.FC<ImageScannerProps> = ({ onCapture, status }) => {
                 </button>
               )}
             </div>
-            
-            {!isScanning && (
-              <div className="mt-4 flex gap-3">
-                <button
-                  onClick={handleReset}
-                  className="btn-outline flex-1"
-                  disabled={isScanning}
-                >
-                  Reset
-                </button>
-                <button
-                  onClick={handleScan}
-                  className="btn-primary flex-1"
-                  disabled={isScanning}
-                >
-                  Identify Bottle
-                </button>
-              </div>
-            )}
-            
-            {status === 'processing' && (
-              <div className="mt-4 text-center">
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  Processing image...
-                </p>
-              </div>
-            )}
           </motion.div>
         ) : captureMethod === 'camera' ? (
           <motion.div
