@@ -1,6 +1,5 @@
 import { BottleResult, WhiskyBottle } from '../types';
-import { loadWhiskyDatabase } from './wiskeyLoader'; // adjust path as needed
-// Full whisky dataset from the spreadsheet
+
 // const whiskyDatabase = await loadWhiskyDatabase();
 interface MatchResult {
   score: number;
