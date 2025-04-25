@@ -1,6 +1,30 @@
 import { BottleResult, WhiskyBottle } from '../types';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 // const whiskyDatabase = await loadWhiskyDatabase();
+const loadWhiskyDatabase = async (): Promise<WhiskyBottle[]> => {
+  const filePath = path.join(__dirname, './public/whisky_database.csv');
+  const csvData = await fs.readFile(filePath, 'utf-8');
+  
+  return csvData
+    .split('\n')
+    .slice(1) // Skip header row
+    .filter(line => line.trim() !== '') // Remove empty lines
+    .map(line => {
+      const [id, name, producer, type, region, age] = line.split(',');
+      return {
+        id: id.trim(),
+        name: name.trim(),
+        producer: producer.trim(),
+        type: type.trim(),
+        region: region.trim() || null,
+        age: age.trim() || null
+      } as WhiskyBottle;
+    });
+};
+
+const whiskyBottles: WhiskyBottle[] = await loadWhiskyDatabase();
 interface MatchResult {
   score: number;
   bottle: WhiskyBottle;
